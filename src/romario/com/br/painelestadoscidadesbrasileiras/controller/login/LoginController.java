@@ -5,7 +5,7 @@ import okhttp3.Response;
 import romario.com.br.painelestadoscidadesbrasileiras.constants.Constants;
 import romario.com.br.painelestadoscidadesbrasileiras.domain.ResponseInterface;
 import romario.com.br.painelestadoscidadesbrasileiras.domain.dto.ErrorDTO;
-import romario.com.br.painelestadoscidadesbrasileiras.domain.dto.UserDTO;
+import romario.com.br.painelestadoscidadesbrasileiras.domain.AuthenticatedUser;
 import romario.com.br.painelestadoscidadesbrasileiras.domain.form.LoginForm;
 import romario.com.br.painelestadoscidadesbrasileiras.repositories.ApiBaseHelper;
 
@@ -18,13 +18,21 @@ public class LoginController extends ApiBaseHelper {
     public ResponseInterface authenticate(LoginForm loginForm) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            String url = Constants.BASE_URL + "login";
 
             String jsonInString = mapper.writeValueAsString(loginForm);
+            
+            System.out.print(url + "\n");
+            System.out.print(jsonInString + "\n");
 
             Response response = getResponse(jsonInString, Constants.BASE_URL + "login", "POST");
 
+            String responseApi = response.body().string();
+            
+            System.out.print(responseApi + "\n");
+            
             if (response.code() == 200) {
-                UserDTO userDTO = mapper.readValue(response.body().string(), UserDTO.class);
+                AuthenticatedUser userDTO = mapper.readValue(responseApi, AuthenticatedUser.class);
                 userDTO.setToken(response.header("Authorization"));
 
                 return userDTO;

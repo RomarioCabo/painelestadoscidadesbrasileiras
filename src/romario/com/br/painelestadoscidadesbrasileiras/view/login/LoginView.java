@@ -4,10 +4,11 @@ import javax.swing.SwingWorker;
 import romario.com.br.painelestadoscidadesbrasileiras.controller.login.LoginController;
 import romario.com.br.painelestadoscidadesbrasileiras.domain.ResponseInterface;
 import romario.com.br.painelestadoscidadesbrasileiras.domain.dto.ErrorDTO;
-import romario.com.br.painelestadoscidadesbrasileiras.domain.dto.UserDTO;
+import romario.com.br.painelestadoscidadesbrasileiras.domain.AuthenticatedUser;
 import romario.com.br.painelestadoscidadesbrasileiras.domain.form.LoginForm;
 import romario.com.br.painelestadoscidadesbrasileiras.shared.Util;
 import romario.com.br.painelestadoscidadesbrasileiras.view.dialog.DialogView;
+import romario.com.br.painelestadoscidadesbrasileiras.view.home.ViewHome;
 
 public class LoginView extends javax.swing.JFrame {
 
@@ -15,7 +16,7 @@ public class LoginView extends javax.swing.JFrame {
 
     private final Util util;
 
-   private ResponseInterface response;
+    private ResponseInterface response;
 
     public LoginView() {
         initComponents();
@@ -103,39 +104,42 @@ public class LoginView extends javax.swing.JFrame {
 
             @Override
             protected void done() {
-                if (response instanceof UserDTO) {
-                    UserDTO userDTO = (UserDTO) response;
+                if (response instanceof AuthenticatedUser) {
+                    AuthenticatedUser userDTO = (AuthenticatedUser) response;
 
-                    
+                    ViewHome viewHome = new ViewHome();
+                    viewHome.setVisible(true);
+
+                    loginView.dispose();
                 } else if (response instanceof ErrorDTO) {
                     util.qualPanelExibir(panelLogin, panelPai);
-                    
+
                     ErrorDTO errorDTO = (ErrorDTO) response;
 
-                    DialogView dialog 
+                    DialogView dialog
                             = new DialogView(loginView,
-                            false,
-                            "/romario/com/br/painelestadoscidadesbrasileiras/assets/icon_warning.png",
-                            "Oops...",
-                            errorDTO.getMessage(),
-                            255,
-                            0,
-                            0
-                    );
-                    
+                                    false,
+                                    "/romario/com/br/painelestadoscidadesbrasileiras/assets/icon_warning.png",
+                                    "Oops...",
+                                    errorDTO.getMessage(),
+                                    255,
+                                    0,
+                                    0
+                            );
+
                     dialog.setVisible(true);
                 } else {
-                    DialogView dialog 
+                    DialogView dialog
                             = new DialogView(loginView,
-                            false,
-                            "/romario/com/br/painelestadoscidadesbrasileiras/assets/icon_warning.png",
-                            "Oops...",
-                            "Houve algum error inesperado!",
-                            255,
-                            200,
-                            0
-                    );
-                    
+                                    false,
+                                    "/romario/com/br/painelestadoscidadesbrasileiras/assets/icon_warning.png",
+                                    "Oops...",
+                                    "Houve algum error inesperado!",
+                                    255,
+                                    200,
+                                    0
+                            );
+
                     dialog.setVisible(true);
                 }
             }
@@ -379,8 +383,8 @@ public class LoginView extends javax.swing.JFrame {
 
         this.setLocation(x - xx, y - xy);
     }
-    
-     private LoginForm getLoginForm(String email, String senha) {
+
+    private LoginForm getLoginForm(String email, String senha) {
         LoginForm loginForm = new LoginForm();
         loginForm.setEmail(email);
         loginForm.setPassword(senha);

@@ -1,4 +1,4 @@
-package romario.com.br.painelestadoscidadesbrasileiras.domain.dto;
+package romario.com.br.painelestadoscidadesbrasileiras.domain;
 
 import romario.com.br.painelestadoscidadesbrasileiras.domain.ResponseInterface;
 
@@ -6,22 +6,22 @@ import romario.com.br.painelestadoscidadesbrasileiras.domain.ResponseInterface;
  *
  * @author Romario
  */
-public class UserDTO implements ResponseInterface {
-    private Long id;
-    private String name;
-    private String email;
-    private String profile;
-    private String token;
+public class AuthenticatedUser implements ResponseInterface {
+    private static Long id;
+    private static String name;
+    private static String email;
+    private static String profile;
+    private static String token;
 
     public String getToken() {
         return token;
     }
 
     public void setToken(String token) {
-        this.token = token;
+        AuthenticatedUser.token = token;
     }
 
-    public UserDTO() {
+    public AuthenticatedUser() {
         
     }
 
@@ -30,7 +30,7 @@ public class UserDTO implements ResponseInterface {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        AuthenticatedUser.id = id;
     }
 
     public String getName() {
@@ -38,7 +38,7 @@ public class UserDTO implements ResponseInterface {
     }
 
     public void setName(String name) {
-        this.name = name;
+        AuthenticatedUser.name = name;
     }
 
     public String getEmail() {
@@ -46,7 +46,7 @@ public class UserDTO implements ResponseInterface {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        AuthenticatedUser.email = email;
     }
 
     public String getProfile() {
@@ -54,6 +54,6 @@ public class UserDTO implements ResponseInterface {
     }
 
     public void setProfile(String profile) {
-        this.profile = profile;
+        AuthenticatedUser.profile = profile;
     }
 }
