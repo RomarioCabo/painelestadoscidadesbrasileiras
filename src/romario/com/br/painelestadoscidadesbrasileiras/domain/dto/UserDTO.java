@@ -8,8 +8,10 @@ import romario.com.br.painelestadoscidadesbrasileiras.domain.ResponseInterface;
  * @author Romario
  */
 @Data
-public class ErrorDTO implements ResponseInterface {
-    private Integer status;
-    private String message;
-    private Long timeStamp;
+public class UserDTO implements ResponseInterface {
+
+    private Long id;
+    private String name;
+    private String email;
+    private ProfileDTO profile;
 }

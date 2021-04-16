@@ -25,7 +25,7 @@ public class LoginController extends ApiBaseHelper {
             System.out.print(url + "\n");
             System.out.print(jsonInString + "\n");
 
-            Response response = getResponse(jsonInString, Constants.BASE_URL + "login", "POST");
+            Response response = getResponse(jsonInString, Constants.BASE_URL + "login", "POST", null);
 
             String responseApi = response.body().string();
             
@@ -37,7 +37,7 @@ public class LoginController extends ApiBaseHelper {
 
                 return userDTO;
             } else {
-                return mapper.readValue(response.body().string(), ErrorDTO.class);
+                return mapper.readValue(responseApi, ErrorDTO.class);
             }
         } catch (Exception e) {
             e.printStackTrace();

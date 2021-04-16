@@ -12,7 +12,7 @@ import okhttp3.Response;
  */
 public abstract class ApiBaseHelper {
 
-    public Response getResponse(String objectInJoson, String url, String method) throws Exception {
+    public Response getResponse(String objectInJoson, String url, String method, String authorization) throws Exception {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("application/json");
 
@@ -24,17 +24,26 @@ public abstract class ApiBaseHelper {
 
         Request request = null;
 
-        if (method.equals("POST")) {
+        if (method.equals("GET")) {
             request = new Request.Builder()
                     .url(url)
                     .method(method, body)
-                    .addHeader("Content-Type", "application/json")
                     .build();
         } else {
-            request = new Request.Builder()
-                    .url(url)
-                    .method(method, body)
-                    .build();
+            if (authorization == null) {
+                request = new Request.Builder()
+                        .url(url)
+                        .method(method, body)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+            } else {
+                request = new Request.Builder()
+                        .url(url)
+                        .method(method, body)
+                        .addHeader("Content-Type", "application/json")
+                        .addHeader("Authorization", authorization)
+                        .build();
+            }
         }
 
         return client.newCall(request).execute();

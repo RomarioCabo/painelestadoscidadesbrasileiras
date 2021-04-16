@@ -7,7 +7,10 @@ import lombok.Data;
  * @author Romario
  */
 @Data
-public class LoginForm {
+public class UserForm {
+    private String name;
     private String email;
     private String password;
+    
+    private int codProfile;
 }

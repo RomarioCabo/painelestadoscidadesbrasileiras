@@ -1,7 +1,5 @@
 package romario.com.br.painelestadoscidadesbrasileiras.domain;
 
-import romario.com.br.painelestadoscidadesbrasileiras.domain.ResponseInterface;
-
 /**
  *
  * @author Romario

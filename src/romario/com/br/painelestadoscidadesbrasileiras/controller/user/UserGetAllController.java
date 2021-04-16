@@ -6,7 +6,7 @@ import java.util.List;
 import okhttp3.Response;
 import romario.com.br.painelestadoscidadesbrasileiras.constants.Constants;
 import romario.com.br.painelestadoscidadesbrasileiras.domain.Page;
-import romario.com.br.painelestadoscidadesbrasileiras.domain.dto.UserDto;
+import romario.com.br.painelestadoscidadesbrasileiras.domain.dto.UserDTO;
 import romario.com.br.painelestadoscidadesbrasileiras.repositories.ApiBaseHelper;
 
 /**
@@ -15,15 +15,15 @@ import romario.com.br.painelestadoscidadesbrasileiras.repositories.ApiBaseHelper
  */
 public class UserGetAllController extends ApiBaseHelper {
 
-    public Page<UserDto> getAllUsers(Integer page) {
+    public Page<UserDTO> getAllUsers(Integer page) {
         try {
             ObjectMapper mapper = new ObjectMapper();
 
             String url = Constants.BASE_URL + Constants.URL_VERSION + "user?linesPerPage=" + 10 + "&page=" + page + "&sortBy=id";
-            
+
             System.out.print(url + "\n");
 
-            Response response = getResponse(null, url, "GET");
+            Response response = getResponse(null, url, "GET", null);
 
             String responseApi = response.body().string();
 
@@ -31,13 +31,11 @@ public class UserGetAllController extends ApiBaseHelper {
 
             if (response.code() == 200) {
                 if (response.body() != null) {
-                    Page<UserDto> pageDto = new Page<>();
-                    pageDto.setTotalElements(Long.parseLong(response.header("totalelements")));
-                    pageDto.setTotalPages(Long.parseLong(response.header("totalpages")));
-                    pageDto.setListDto(mapper.readValue(responseApi, new TypeReference<List<UserDto>>() {
-                    }));
-
-                    return pageDto;
+                    return getPage(
+                            response.header("totalelements"),
+                            response.header("totalpages"),
+                            mapper.readValue(responseApi, new TypeReference<List<UserDTO>>(){})
+                    );
                 }
 
                 return null;
@@ -49,5 +47,14 @@ public class UserGetAllController extends ApiBaseHelper {
 
             return null;
         }
+    }
+
+    private Page<UserDTO> getPage(String totalElements, String toalPages, List<UserDTO> listDto) {
+        Page<UserDTO> pageDto = new Page<>();
+        pageDto.setTotalElements(Long.parseLong(totalElements));
+        pageDto.setTotalPages(Long.parseLong(toalPages));
+        pageDto.setListDto(listDto);
+
+        return pageDto;
     }
 }
